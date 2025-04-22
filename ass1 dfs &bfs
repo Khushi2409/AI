@@ -1,0 +1,71 @@
+from collections import deque
+
+# Graph class to store the graph in an adjacency list format
+class Graph:
+    def __init__(self):
+        self.graph = {}
+
+    def add_edge(self, u, v):
+        """Add an undirected edge to the graph."""
+        if u not in self.graph:
+            self.graph[u] = []
+        if v not in self.graph:
+            self.graph[v] = []
+        self.graph[u].append(v)
+        self.graph[v].append(u)
+
+    def dfs(self, start):
+        """Perform depth-first search (DFS) using recursion."""
+        visited = set()  # Set to track visited nodes
+        self._dfs_recursive(start, visited)
+    
+    def _dfs_recursive(self, node, visited):
+        """Helper function for recursive DFS."""
+        if node not in visited:
+            print(node, end=" ")  # Print the current node
+            visited.add(node)  # Mark the node as visited
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    self._dfs_recursive(neighbor, visited)
+
+    def bfs(self, start):
+        """Perform breadth-first search (BFS) using a queue."""
+        visited = set()  # Set to track visited nodes
+        queue = deque([start])  # Initialize queue with the start node
+        visited.add(start)
+        
+        while queue:
+            node = queue.popleft()
+            print(node, end=" ")  # Print the current node
+            for neighbor in self.graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+# Function to take user input and build the graph
+def take_input():
+    graph = Graph()
+    n = int(input("Enter the number of edges: "))
+    
+    for _ in range(n):
+        u, v = map(int, input("Enter the edge (u, v): ").split())
+        graph.add_edge(u, v)
+    
+    return graph
+
+def main():
+    # Take user input and create graph
+    graph = take_input()
+
+    # Take the starting vertex for DFS and BFS
+    start = int(input("Enter the starting vertex for traversal: "))
+    
+    print("\nDepth First Search (DFS):")
+    graph.dfs(start)
+    
+    print("\n\nBreadth First Search (BFS):")
+    graph.bfs(start)
+
+if __name__ == "__main__":
+    main()
+
