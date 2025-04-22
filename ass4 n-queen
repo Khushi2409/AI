@@ -1,0 +1,69 @@
+# Backtracking approach for the n-Queens problem
+
+# Function to check if a queen can be placed at position (row, col)
+def is_safe(board, row, col, n):
+    for i in range(row):
+        # Check column
+        if board[i] == col:
+            return False
+        # Check diagonals
+        if abs(board[i] - col) == abs(i - row):
+            return False
+    return True
+
+# Backtracking solution for n-Queens problem
+def solve_n_queens_backtracking(board, row, n, solutions):
+    if row == n:
+        # All queens are placed successfully, add the solution
+        solutions.append(board[:])  # Make a copy of the board
+        return
+    
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row] = col  # Place queen at (row, col)
+            solve_n_queens_backtracking(board, row + 1, n, solutions)  # Recur to place the next queen
+            board[row] = -1  # Backtrack
+
+# Branch and Bound solution for n-Queens problem (similar to Backtracking)
+def solve_n_queens_branch_bound(board, row, n, solutions):
+    if row == n:
+        # All queens are placed successfully, add the solution
+        solutions.append(board[:])
+        return
+
+    # Bounding condition: Try to place a queen in all columns of the current row
+    for col in range(n):
+        if is_safe(board, row, col, n):
+            board[row] = col
+            solve_n_queens_branch_bound(board, row + 1, n, solutions)
+            board[row] = -1  # Backtrack
+
+# Function to print a solution (board representation)
+def print_solution(board):
+    n = len(board)
+    for row in range(n):
+        line = ['Q' if col == board[row] else '.' for col in range(n)]
+        print(" ".join(line))
+    print()
+
+# Function to take user input and solve the n-Queens problem
+def main():
+    n = int(input("Enter the number of queens (n): "))
+    print("Solving the n-Queens problem using Backtracking:")
+    board = [-1] * n  # Create an empty board with -1 (no queen placed)
+    solutions = []
+    solve_n_queens_backtracking(board, 0, n, solutions)
+    print(f"Number of solutions found: {len(solutions)}")
+    for solution in solutions:
+        print_solution(solution)
+    
+    # Now, solving using Branch and Bound (same as backtracking in this case)
+    print("Solving the n-Queens problem using Branch and Bound:")
+    solutions = []
+    solve_n_queens_branch_bound(board, 0, n, solutions)
+    print(f"Number of solutions found: {len(solutions)}")
+    for solution in solutions:
+        print_solution(solution)
+
+if __name__ == "__main__":
+    main()
