@@ -1,0 +1,42 @@
+# Define a simple rule-based Expert System for disease diagnosis
+
+# A dictionary of diseases and their symptoms (in reality, this would be much more complex)
+diseases = {
+    "Flu": {"fever", "headache", "cough", "body aches"},
+    "Cold": {"cough", "sore throat", "runny nose", "sneezing"},
+    "COVID-19": {"fever", "cough", "shortness of breath", "fatigue", "loss of taste or smell"},
+    "Malaria": {"fever", "chills", "sweating", "headache", "nausea"},
+    "Chickenpox": {"fever", "itchy rash", "blisters", "headache"}
+}
+
+# Function to ask the user for symptoms and diagnose
+def diagnose():
+    print("Welcome to the Hospital Expert System.")
+    print("Please answer the following questions with 'yes' or 'no'.")
+    
+    # Initialize a set to store symptoms entered by the user
+    user_symptoms = set()
+    
+    # Ask about symptoms
+    for symptom in diseases["Flu"]:  # Loop over common symptoms from the diseases dictionary
+        answer = input(f"Do you have {symptom}? (yes/no): ").lower()
+        if answer == 'yes':
+            user_symptoms.add(symptom)
+    
+    # Diagnose disease based on symptoms
+    matched_diseases = []
+    
+    for disease, disease_symptoms in diseases.items():
+        if disease_symptoms.issubset(user_symptoms):  # If the user's symptoms match a disease
+            matched_diseases.append(disease)
+
+    if matched_diseases:
+        print("\nBased on your symptoms, you may have the following diseases:")
+        for disease in matched_diseases:
+            print(f"- {disease}")
+    else:
+        print("\nSorry, we couldn't match your symptoms to any known diseases.")
+
+# Main function to start the expert system
+if __name__ == "__main__":
+    diagnose()
