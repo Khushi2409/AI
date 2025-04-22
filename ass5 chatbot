@@ -1,0 +1,59 @@
+import random
+
+# Predefined responses for the chatbot
+responses = {
+    "greet": ["Hello! How can I assist you today?", "Hi there! How may I help you?", "Good day! What can I do for you today?"],
+    "goodbye": ["Goodbye! Have a great day!", "Thank you for chatting with us. See you soon!", "Bye! We're here if you need any help."],
+    "help": ["You can ask me about our products, order status, or how to contact support. Just type your question and I'll assist you!"],
+    "order_status": ["Please provide your order number to check the status.", "Can you share your order number? I'll look it up for you."],
+    "product_info": ["We have a variety of products. Can you tell me which product you're interested in?", "What product would you like to know more about?"],
+    "error": ["Sorry, I didn't understand that. Could you please clarify?", "I'm sorry, I don't quite get that. Can you rephrase?"]
+}
+
+# Function to simulate getting order status
+def check_order_status(order_number):
+    # In a real application, you'd query a database or an API for order info
+    # Here we return a random status for simulation purposes
+    status = random.choice(["Your order is being processed.", "Your order has shipped and will arrive in 3-5 days.", "Your order is on hold due to payment issues."])
+    return f"Order {order_number}: {status}"
+
+# Simple function to respond based on user input
+def chatbot_response(user_input):
+    # Convert user input to lowercase to make matching case-insensitive
+    user_input = user_input.lower()
+
+    # Check for specific intents or commands
+    if "hello" in user_input or "hi" in user_input or "hey" in user_input:
+        return random.choice(responses["greet"])
+    elif "bye" in user_input or "goodbye" in user_input:
+        return random.choice(responses["goodbye"])
+    elif "help" in user_input:
+        return random.choice(responses["help"])
+    elif "order status" in user_input:
+        return random.choice(responses["order_status"])
+    elif "product" in user_input or "info" in user_input:
+        return random.choice(responses["product_info"])
+    elif "order" in user_input and "number" in user_input:
+        # Simulate order number retrieval from the user
+        order_number = input("Please enter your order number: ")
+        return check_order_status(order_number)
+    else:
+        return random.choice(responses["error"])
+
+# Main function for chatbot interaction
+def start_chat():
+    print("Welcome to our customer support chat! Type 'bye' to exit.")
+    
+    while True:
+        user_input = input("You: ")
+        
+        if "bye" in user_input.lower() or "goodbye" in user_input.lower():
+            print("Chatbot: " + random.choice(responses["goodbye"]))
+            break
+        
+        response = chatbot_response(user_input)
+        print("Chatbot: " + response)
+
+# Start the chatbot
+if __name__ == "__main__":
+    start_chat()
